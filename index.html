@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DarkSystem | بوت إدارة ديسكورد</title>
+    <link rel="shortcut icon" href="img/DarkSystem.jpg" type="image/x-icon" />
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #18191a 0%, #232526 100%);
+            color: #fff;
+            font-family: 'Cairo', sans-serif;
+            margin: 0;
+            padding: 0;
+            transition: background 0.4s, color 0.4s;
+        }
+        body.light-mode {
+            background: linear-gradient(135deg, #f5f6fa 0%, #e1e6ea 100%);
+            color: #232526;
+        }
+        .navbar {
+            background: #232526;
+            padding: 0;
+            box-shadow: 0 2px 12px #00bfff22;
+            display: flex;
+            align-items: center;
+            font-size: 1.1rem;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        .theme-toggle-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.7rem;
+            margin-right: auto;
+            color: #FFD700;
+            transition: color 0.2s, transform 0.2s;
+        }
+        .theme-toggle-btn:hover {
+            color: #00bfff;
+            transform: scale(1.15) rotate(-10deg);
+        }
+        .nav-links {
+            display: flex;
+            gap: 40px;
+            margin: 0 auto;
+        }
+        .navbar a {
+            color: #fff;
+            text-decoration: none;
+            padding: 18px 16px 12px 16px;
+            transition: color 0.2s, border-bottom 0.2s;
+            border-bottom: 2px solid transparent;
+        }
+        .navbar a:hover, .navbar a.active {
+            color: #00bfff;
+            border-bottom: 2px solid #00bfff;
+        }
+        .container {
+            max-width: 950px;
+            margin: 40px auto;
+            background: rgba(24, 25, 26, 0.99);
+            border-radius: 22px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            padding: 40px 30px 20px 30px;
+            text-align: center;
+            position: relative;
+            transition: background 0.4s, color 0.4s;
+        }
+        body.light-mode .container {
+            background: #fff;
+            color: #232526;
+        }
+        .bot-logo {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            box-shadow: 0 4px 24px #00bfff44;
+            border: 4px solid #232526;
+            background: #000000;
+            object-fit: cover;
+            transition: transform 0.3s;
+            margin-bottom: 10px;
+        }
+        .bot-logo:hover {
+            transform: scale(1.07) rotate(-3deg);
+            box-shadow: 0 8px 32px #00bfff88;
+        }
+        h1 {
+            font-size: 2.7rem;
+            margin-bottom: 10px;
+            color: #00bfff;
+            letter-spacing: 2px;
+            text-shadow: 0 2px 8px #00bfff33;
+        }
+        body.light-mode h1 {
+            color: #00bfff;
+            text-shadow: none;
+        }
+        .discord-badge {
+            display: inline-block;
+            background: #23272a;
+            color: #7289da;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-radius: 8px;
+            padding: 6px 18px;
+            margin-bottom: 18px;
+            letter-spacing: 1px;
+            box-shadow: 0 2px 8px #23272a44;
+        }
+        .desc {
+            font-size: 1.25rem;
+            margin-bottom: 30px;
+            color: #eee;
+            background: rgba(0,191,255,0.07);
+            border-radius: 10px;
+            padding: 18px 10px;
+            box-shadow: 0 2px 12px 0 rgba(0,191,255,0.07);
+        }
+        body.light-mode .desc {
+            color: #232526;
+            background: #f5f6fa;
+        }
+        .features {
+            text-align: center;
+            margin: 0 auto 30px auto;
+            max-width: 400px;
+            display: block;
+        }
+        .features li {
+            margin: 10px auto;
+            font-size: 1.08rem;
+            background: rgba(0,191,255,0.10);
+            padding: 10px 30px;
+            border-radius: 8px;
+            list-style: none;
+            position: relative;
+            min-width: 260px;
+            box-shadow: 0 2px 8px 0 rgba(0,191,255,0.04);
+            border-right: 4px solid #00bfff;
+            width: fit-content;
+        }
+        .features li:before {
+            content: "⭐";
+            margin-left: 15px;
+            color: #FFD700;
+        }
+        body.light-mode .features li {
+            background: #f5f6fa;
+            color: #232526;
+        }
+        .add-btn {
+            display: inline-block;
+            background: linear-gradient(90deg, #00bfff 0%, #1abc9c 100%);
+            color: #fff;
+            font-size: 1.3rem;
+            font-weight: bold;
+            padding: 16px 38px;
+            border: none;
+            border-radius: 12px;
+            text-decoration: none;
+            box-shadow: 0 4px 16px rgba(0,191,255,0.2);
+            transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+            margin-top: 20px;
+        }
+        .add-btn:hover {
+            background: linear-gradient(90deg, #1abc9c 0%, #00bfff 100%);
+            transform: scale(1.07);
+            box-shadow: 0 8px 32px #00bfff55;
+        }
+        .section-title {
+            color: #FFD700;
+            margin-bottom: 18px;
+            font-size: 2rem;
+            text-shadow: 0 2px 8px #FFD70022;
+        }
+        .commands-section {
+            background: rgba(0, 0, 0, 0.18);
+            border-radius: 16px;
+            margin: 50px 0 0 0;
+            padding: 35px 10px 25px 10px;
+            box-shadow: 0 2px 12px 0 rgba(0,191,255,0.09);
+        }
+        body.light-mode .commands-section {
+            background: #f5f6fa;
+            color: #232526;
+        }
+        .commands-list {
+            text-align: right;
+            margin: 0 auto;
+            max-width: 700px;
+            columns: 2;
+            column-gap: 30px;
+        }
+        .command-item {
+            background: rgba(0,191,255,0.11);
+            margin-bottom: 14px;
+            padding: 12px 16px;
+            border-radius: 8px;
+            border-right: 4px solid #00bfff;
+            font-size: 1.08rem;
+            transition: background 0.2s;
+            break-inside: avoid;
+            box-shadow: 0 2px 8px 0 rgba(0,191,255,0.04);
+        }
+        .command-item:hover {
+            background: rgba(0,191,255,0.18);
+        }
+        .command-name {
+            color: #00bfff;
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-left: 8px;
+        }
+        .command-desc {
+            color: #fff;
+        }
+        body.light-mode .command-item {
+            background: #e1e6ea;
+            color: #232526;
+        }
+        body.light-mode .command-name {
+            color: #00bfff;
+        }
+        body.light-mode .command-desc {
+            color: #232526;
+        }
+        .hero-glow {
+            position: absolute;
+            top: -60px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 350px;
+            height: 120px;
+            background: radial-gradient(ellipse at center, #00bfff33 0%, #23252600 80%);
+            z-index: 0;
+            pointer-events: none;
+            filter: blur(6px);
+        }
+        .about-section {
+            margin: 40px 0 0 0;
+            background: rgba(0,191,255,0.07);
+            border-radius: 14px;
+            padding: 25px 18px 18px 18px;
+            text-align: right;
+            box-shadow: 0 2px 12px 0 rgba(0,191,255,0.07);
+            max-width: 700px;
+            margin-right: auto;
+            margin-left: auto;
+        }
+        .about-section h2 {
+            color: #00bfff;
+            font-size: 1.4rem;
+            margin-bottom: 10px;
+        }
+        .about-section p {
+            color: #eee;
+            font-size: 1.08rem;
+            margin: 0;
+        }
+        body.light-mode .about-section {
+            background: #f5f6fa;
+            color: #232526;
+        }
+        body.light-mode .about-section h2 {
+            color: #00bfff;
+        }
+        body.light-mode .about-section p {
+            color: #232526;
+        }
+        .faq-section {
+            margin: 50px 0 0 0;
+            background: rgba(0,191,255,0.05);
+            border-radius: 14px;
+            padding: 30px 18px 18px 18px;
+            text-align: right;
+            box-shadow: 0 2px 12px 0 rgba(0,191,255,0.07);
+            max-width: 700px;
+            margin-right: auto;
+            margin-left: auto;
+        }
+        .faq-section h2 {
+            color: #FFD700;
+            font-size: 1.3rem;
+            margin-bottom: 18px;
+        }
+        .faq-q {
+            color: #00bfff;
+            font-weight: bold;
+            margin-bottom: 4px;
+            margin-top: 18px;
+        }
+        .faq-a {
+            color: #eee;
+            margin-bottom: 10px;
+            font-size: 1.04rem;
+        }
+        body.light-mode .faq-section {
+            background: #e1e6ea;
+            color: #232526;
+        }
+        body.light-mode .faq-section h2 {
+            color: #00bfff;
+        }
+        body.light-mode .faq-q {
+            color: #00bfff;
+        }
+        body.light-mode .faq-a {
+            color: #232526;
+        }
+        .contact-section {
+            margin: 50px 0 0 0;
+            background: rgba(0,191,255,0.05);
+            border-radius: 14px;
+            padding: 30px 18px 18px 18px;
+            text-align: right;
+            box-shadow: 0 2px 12px 0 rgba(0,191,255,0.07);
+            max-width: 700px;
+            margin-right: auto;
+            margin-left: auto;
+        }
+        .contact-section h2 {
+            color: #FFD700;
+            font-size: 1.3rem;
+            margin-bottom: 18px;
+        }
+        .contact-link {
+            color: #00bfff;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: color 0.2s;
+        }
+        .contact-link:hover {
+            color: #FFD700;
+        }
+        .footer {
+            margin-top: 50px;
+            color: #aaa;
+            font-size: 1rem;
+            letter-spacing: 1px;
+        }
+        @media (max-width: 900px) {
+            .container { max-width: 99vw; }
+            .commands-list { columns: 1; }
+        }
+        @media (max-width: 600px) {
+            .container { padding: 20px 5px; }
+            h1 { font-size: 2rem; }
+            .section-title { font-size: 1.3rem; }
+            .bot-logo { width: 80px; height: 80px; }
+            .commands-list { columns: 1; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <button id="theme-toggle" class="theme-toggle-btn" aria-label="تغيير الوضع">🌙</button>
+        <div class="nav-links">
+            <a href="#home" class="active">الرئيسية</a>
+            <a href="#features">المميزات</a>
+            <a href="#commands">الأوامر</a>
+            <a href="#contact">تواصل معنا</a>
+        </div>
+    </nav>
+    <div class="container" id="home">
+        <div class="hero-glow"></div>
+        <img src="img/DarkSystem.jpg" alt="شعار البوت" class="bot-logo">
+        <h1>DarkSystem</h1>
+        <div class="desc">
+            بوت إدارة متكامل لسيرفرك، يوفر لك كل ما تحتاجه من تحكم، حماية، إحصائيات حية، وأوامر متقدمة.<br>
+            واجهة عربية بالكامل وتجربة احترافية مثل أشهر البوتات العالمية!
+        </div>
+        <a class="add-btn" href="https://discord.com/oauth2/authorize?client_id=1391534014925377536&scope=bot%20applications.commands&permissions=8" target="_blank">
+            🚀 أضف البوت لسيرفرك الآن
+        </a>
+        <ul class="features" id="features">
+            <li>إحصائيات مباشرة لعدد الأعضاء والبوتات في القنوات</li>
+            <li>أوامر إدارية متقدمة (طرد، حظر، إسكات، فك إسكات...)</li>
+            <li>تنظيف الرسائل، قفل وفتح القنوات، وضع البطء</li>
+            <li>إعلانات فخمة عبر الإمبد</li>
+            <li>معلومات السيرفر، الأعضاء، الرتب، البوستات</li>
+            <li>تخصيص اسم القنوات تلقائياً حسب عدد الأعضاء أو البوتات</li>
+            <li>واجهة أوامر سهلة وسريعة عبر Slash Commands</li>
+            <li>دعم كامل للغة العربية</li>
+        </ul>
+
+        <div class="about-section" id="about">
+            <h2>عن DarkSystem</h2>
+            <p>
+                DarkSystem هو بوت إدارة ديسكورد متكامل، صُمم ليمنحك تجربة تحكم قوية وسهلة في سيرفرك.<br>
+                يدعم العربية بالكامل ويقدم لك كل ما تحتاجه من حماية، تنظيم، إحصائيات حية، وأوامر متقدمة.<br>
+                جربه الآن وارتقِ بسيرفرك إلى مستوى جديد من الاحترافية!
+            </p>
+        </div>
+
+        <div class="commands-section" id="commands">
+            <h2 class="section-title">🛡️ قائمة أوامر البوت</h2>
+            <div class="commands-list">
+                <div class="command-item">
+                    <span class="command-name">/help</span>
+                    <span class="command-desc">عرض جميع أوامر البوت مع شرح مختصر لكل أمر.</span>
+                </div>
+                <div class="command-item">
+                    <span class="command-name">/kick</span>
+                    <span class="command-desc">طرد عضو من السيرفر بسرعة واحترافية.</span>
+                </div>
+                <div class="command-item">
+                    <span class="command-name">/ban</span>
+                    <span class="command-desc">حظر عضو نهائياً من السيرفر.</span>
+                </div>
+                <div class="command-item">
+                    <span class="command-name">/mute</span>
+                    <span class="command-desc">إسكات عضو ومنعه من الكتابة لفترة محددة.</span>
+                </div>
+                <div class="command-item">
+                    <span class="command-name">/unmute</span>
+                    <span class="command-desc">فك الإسكات عن عضو وإرجاعه للدردشة.</span>
+                </div>
+                <div class="command-item">
+                    <span class="command-name">/clear</span>
+                    <span class="command-desc">حذف عدد معين من رسائل القناة دفعة واحدة.</span>
+                </div>
+                <div class="command-item">
+                    <span class="command-name">/lock</span>
+                    <span class="command-desc">قفل القناة الحالية ومنع الجميع من الكتابة.</span>
+                </div>
+                <div class="command-item">
+                    <span class="command-name">/unlock</span>
+                    <span class="command-desc">فتح القناة الحالية والسماح للجميع بالكتابة.</span>
+                </div>
+                <div class="command-item">
+                    <span class="command-name">/slowmode</span>
+                    <span class="command-desc">تفعيل وضع البطء وتحديد مدة بين كل رسالة.</span>
+                </div>
+                <div class="command-item">
+                    <span class="command-name">/announce</span>
+                    <span class="command-desc">إرسال إعلان فخم لجميع الأعضاء عبر الإمبد.</span>
+                </div>
+                <div class="command-item">
+                    <span class="command-name">/warn</span>
+                    <span class="command-desc">تحذير عضو مع توضيح السبب.</span>
+                </div>
+                <div class="command-item">
+                    <span class="command-name">/avatar</span>
+                    <span class="command-desc">عرض صورة بروفايل أي عضو في السيرفر.</span>
+                </div>
+                <div class="command-item">
+                    <span class="command-name">/userinfo</span>
+                    <span class="command-desc">عرض معلومات مفصلة عن أي عضو.</span>
+                </div>
+                <div class="command-item">
+                    <span class="command-name">/roleinfo</span>
+                    <span class="command-desc">عرض معلومات عن أي رتبة في السيرفر.</span>
+                </div>
+                <div class="command-item">
+                    <span class="command-name">/roles</span>
+                    <span class="command-desc">عرض جميع رتب السيرفر في قائمة واحدة.</span>
+                </div>
+                <div class="command-item">
+                    <span class="command-name">/membercount</span>
+                    <span class="command-desc">عرض عدد أعضاء السيرفر الحقيقيين.</span>
+                </div>
+                <div class="command-item">
+                    <span class="command-name">/ping</span>
+                    <span class="command-desc">اختبار سرعة استجابة البوت (البينج).</span>
+                </div>
+                <div class="command-item">
+                    <span class="command-name">/invite</span>
+                    <span class="command-desc">الحصول على رابط دعوة البوت لسيرفرك.</span>
+                </div>
+                <div class="command-item">
+                    <span class="command-name">/servericon</span>
+                    <span class="command-desc">عرض صورة السيرفر بجودة عالية.</span>
+                </div>
+                <div class="command-item">
+                    <span class="command-name">/boostcount</span>
+                    <span class="command-desc">عرض عدد البوستات (Boosts) في السيرفر.</span>
+                </div>
+                <div class="command-item">
+                    <span class="command-name">/channelinfo</span>
+                    <span class="command-desc">عرض معلومات عن القناة الحالية.</span>
+                </div>
+                <div class="command-item">
+                    <span class="command-name">/banlist</span>
+                    <span class="command-desc">عرض قائمة جميع المحظورين من السيرفر.</span>
+                </div>
+                <div class="command-item">
+                    <span class="command-name">/addrole</span>
+                    <span class="command-desc">إضافة رتبة لعضو معين.</span>
+                </div>
+                <div class="command-item">
+                    <span class="command-name">/removerole</span>
+                    <span class="command-desc">إزالة رتبة من عضو معين.</span>
+                </div>
+                <div class="command-item">
+                    <span class="command-name">/move</span>
+                    <span class="command-desc">نقل عضو إلى قناة صوتية أخرى.</span>
+                </div>
+                <div class="command-item">
+                    <span class="command-name">/nickname</span>
+                    <span class="command-desc">تغيير لقب عضو في السيرفر.</span>
+                </div>
+                <div class="command-item">
+                    <span class="command-name">/servercreated</span>
+                    <span class="command-desc">عرض تاريخ إنشاء السيرفر.</span>
+                </div>
+                <div class="command-item">
+                    <span class="command-name">/set-member-amount</span>
+                    <span class="command-desc">تخصيص قناة لعرض عدد الأعضاء الحقيقيين  .</span>
+                </div>
+                <div class="command-item">
+                    <span class="command-name">/set-bot-amount</span>
+                    <span class="command-desc">تخصيص قناة لعرض عدد البوتات في السيرفر بشكل حي.</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="faq-section" id="faq">
+            <h2>الأسئلة الشائعة</h2>
+            <div class="faq-q">كيف أضيف البوت لسيرفري؟</div>
+            <div class="faq-a">اضغط على زر <b>أضف البوت لسيرفرك الآن</b> بالأعلى واتبع التعليمات.</div>
+            <div class="faq-q">هل البوت مجاني؟</div>
+            <div class="faq-a">نعم، البوت مجاني بالكامل ولا توجد أي رسوم خفية.</div>
+            <div class="faq-q">هل يدعم البوت اللغة العربية؟</div>
+            <div class="faq-a">نعم، البوت يدعم العربية بشكل كامل في جميع الأوامر والردود.</div>
+            <div class="faq-q">هل يمكن تخصيص أوامر البوت؟</div>
+            <div class="faq-a">يمكنك التواصل معنا لطلب تخصيص أوامر أو إضافة ميزات جديدة.</div>
+        </div>
+
+        <div class="contact-section" id="contact">
+            <h2>تواصل معنا</h2>
+            <p>
+                لأي استفسار أو دعم فني أو اقتراحات، يمكنك التواصل معنا عبر:<br>
+                <a class="contact-link" href="https://discord.gg/MbyQpCA6dF" target="_blank">سيرفر الدعم الفني</a>
+            </p>
+        </div>
+
+        <div class="footer">
+            &copy; 2025 DarkSystem | جميع الحقوق محفوظة
+        </div>
+    </div>
+    <script>
+        const btn = document.getElementById('theme-toggle');
+        let isLight = false;
+        btn.onclick = function() {
+            isLight = !isLight;
+            document.body.classList.toggle('light-mode', isLight);
+            btn.textContent = isLight ? '☀️' : '🌙';
+        };
+    </script>
+</body>
+</html>
