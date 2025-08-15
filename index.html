@@ -296,7 +296,7 @@ const memberCountSpan = document.getElementById('member-count');
 
 async function updateLiveStats() {
     try {
-        const response = await fetch("https://your-bot-host.com/server-count"); // ضع رابط الاستضافة الخاص بالبوت
+        const response = await fetch("https://panel.thteam.me/server/09e3c542/server-count"); // ضع رابط الاستضافة الخاص بالبوت
         const data = await response.json();
         serverCountSpan.textContent = data.servers || 0;
         memberCountSpan.textContent = data.members || 0;
@@ -311,3 +311,4 @@ setInterval(updateLiveStats, 5000);
 
 </body>
 </html>
+
