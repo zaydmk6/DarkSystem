@@ -263,54 +263,38 @@
     <div class="footer">
         &copy; 2025 DarkSystem | جميع الحقوق محفوظة
         <br>
-        <h3>عدد السيرفرات: <span id="server-count">0</span></h3>
-        <h3>عدد الأعضاء: <span id="member-count">0</span></h3>
+        <h3>عدد السيرفرات: <span id="server-count">2</span></h3>
+        <h3>عدد الأعضاء: <span id="member-count">13</span></h3>
     </div>
 </div>
 
 <script>
-    const btn = document.getElementById('theme-toggle');
-    const currentTheme = localStorage.getItem('darksystem-theme');
-    let isLight = currentTheme === 'light';
+const btn = document.getElementById('theme-toggle');
+const currentTheme = localStorage.getItem('darksystem-theme');
+let isLight = currentTheme === 'light';
+document.body.classList.toggle('light-mode', isLight);
+btn.textContent = isLight ? '☀️' : '🌙';
+
+btn.onclick = function() {
+    isLight = !isLight;
     document.body.classList.toggle('light-mode', isLight);
     btn.textContent = isLight ? '☀️' : '🌙';
+    localStorage.setItem('darksystem-theme', isLight ? 'light' : 'dark');
+};
 
-    btn.onclick = function() {
-        isLight = !isLight;
-        document.body.classList.toggle('light-mode', isLight);
-        btn.textContent = isLight ? '☀️' : '🌙';
-        localStorage.setItem('darksystem-theme', isLight ? 'light' : 'dark');
-    };
-
-    const copyBtns = document.querySelectorAll('.copy-btn');
-    copyBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            navigator.clipboard.writeText(btn.dataset.command);
-            btn.textContent = 'تم النسخ!';
-            setTimeout(() => btn.textContent = 'نسخ', 1000);
-        });
+const copyBtns = document.querySelectorAll('.copy-btn');
+copyBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+        navigator.clipboard.writeText(btn.dataset.command);
+        btn.textContent = 'تم النسخ!';
+        setTimeout(() => btn.textContent = 'نسخ', 1000);
     });
-
-    const serverCountSpan = document.getElementById('server-count');
-    const memberCountSpan = document.getElementById('member-count');
-
-    async function updateLiveStats() {
-        try {
-            const response = await fetch("http://bots.thteam.me:10056/api/stats");
-            const data = await response.json();
-            serverCountSpan.textContent = data.servers;
-            memberCountSpan.textContent = data.members;
-        } catch (err) {
-            console.error("❌ خطأ في جلب البيانات:", err);
-        }
-    }
-
-    // تحديث كل 5 ثواني
-    setInterval(updateLiveStats, 5000);
-    updateLiveStats();
+});
 </script>
+
 
 </body>
 </html>
+
 
 
